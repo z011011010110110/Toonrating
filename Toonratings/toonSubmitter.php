@@ -5,10 +5,24 @@
 
 	//get title, description, and author from url
 
+	// Initialize a CURL session.
+	 function file_get_contents_curl($url) {
+		$ch = curl_init();
+
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+		curl_setopt($ch, CURLOPT_URL, $url);   
+
+		$data = curl_exec($ch);
+		curl_close($ch);
+
+		return $data;
+	}
+
+
 	$url = $_POST['url'];
-	$str = file_get_contents($url);
-	$str2 = file_get_contents($url."&page=10000");
-	if(strlen($str)>3500){
+	$str = file_get_contents_curl($url);
+	$str2 = file_get_contents_curl($url."&page=10000");
+	if(strlen($str)>0){
 		$str = trim(preg_replace('/\s+/', ' ', $str)); // Remove double spaces and new lines
 		$str = str_replace(" | WEBTOON","",$str);
 		
